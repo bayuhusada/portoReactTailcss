@@ -290,7 +290,7 @@ function App() {
 
           
           <div className='relative -top-[5px] bg-primary h-screen' id='project'>
-          <a href=".me" className='absolute top-0 right-0 m-3 text-3xl'
+          <a href=".ME" className='absolute top-0 right-0 m-3 text-3xl'
             onMouseEnter={() => mouseEnter(true)}
             onMouseLeave={() => mouseLeave(true)}
             >HOME</a>
