@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+html{
+  scroll-behavior: smooth ;
+}
 
 ::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
@@ -12,6 +15,7 @@ body {
   scrollbar-width: none;  /* Firefox */
   overflow-x: hidden;
   background-color: #eeeeee;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #web-con{
@@ -37,3 +41,4 @@ body {
   position: relative;
   transform: scale(2);
 }
+

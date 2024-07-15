@@ -14,6 +14,8 @@ import g5 from './assets/g5.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
+
+
 function App() {
   const comp = useRef(null);
   const ballRef = useRef(null);
@@ -97,7 +99,6 @@ function App() {
         },
       });
     });
-
     const handleDOMContentLoaded = () => {
       const contentHolderHeight = document.querySelector('#content-holder').offsetHeight;
       const imgHolderHeight = window.innerHeight;
@@ -141,7 +142,19 @@ function App() {
         scrub: 1,
       },
     });
-
+    gsap.to('#header', {
+      x: () => innerWidth, // Menggeser elemen keluar dari viewport ke kanan
+      opacity: 0, // Mengatur opacity menjadi 0 untuk efek fade out
+      ease: 'power2.inOut',
+      scrollTrigger: {
+        trigger: '#content-holder', // Memulai trigger pada elemen yang diinginkan
+        start: 'top top', // Mulai animasi saat elemen #content-holder mencapai bagian atas viewport
+        end: '+=200%', // Selesai animasi setelah scroll 200% dari tinggi viewport
+        scrub: 1, // Membuat animasi sinkron dengan scrolling
+        toggleActions: 'play none none reverse', // Mengatur bagaimana animasi dimainkan dan dibalik
+      },
+    });
+    
     gsap.to('#img-holder', {
       rotation: 0,
       clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
@@ -162,6 +175,9 @@ function App() {
         scrub: 1,
       },
     });
+
+
+    
 
     const xSet = gsap.quickSetter(ballRef.current, 'x', 'px');
     const ySet = gsap.quickSetter(ballRef.current, 'y', 'px');
@@ -187,6 +203,8 @@ function App() {
       document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded);
     };
   }, []);
+
+
 
   return (
     <>
@@ -220,26 +238,36 @@ function App() {
         </div>
       </div>
 
-      <div className=''>
-        <div className="fixed left-0 top-0 w-full h-full z-[-1]"></div>
-        <div className="flex justify-center items-center fixed mx-96 mt-96 text-abubua z-[2]" id="header">
-          <div className="grid grid-cols-2 gap-4 items-center justify-center uppercase pr-48" ref={textRef}>
-            <div className="flex">
-              <div className="font-bold text-[200px] letter">B</div>
-              <div className="font-bold text-[200px] letter">a</div>
-              <div className="font-bold text-[200px] letter">y</div>
-              <div className="font-bold text-[200px] letter">u</div>
-            </div>
-            <div className="flex">
-              <div className="font-bold text-[200px] letter-2">H</div>
-              <div className="font-bold text-[200px] letter-2">u</div>
-              <div className="font-bold text-[200px] letter-2">s</div>
-              <div className="font-bold text-[200px] letter-2">a</div>
-              <div className="font-bold text-[200px] letter-2">d</div>
-              <div className="font-bold text-[200px] letter-2">a</div>
-            </div>
+    
+
+      <div className='ME'>
+      <a href="#content-holder" className='absolute top-0 right-0 m-3 text-3xl'
+            onMouseEnter={() => mouseEnter(true)}
+            onMouseLeave={() => mouseLeave(true)}
+            >HOVER ME</a>
+        <div className="flex justify-center items-center fixed inset-0 text-abubua z-[2]" id="header">
+          <div className="grid grid-cols-1 gap-4 items-center justify-center" ref={textRef}>
+            <a href="#project" className='flex justify-center items-center uppercase'
+              onMouseEnter={() => mouseEnter(true)}
+              onMouseLeave={() => mouseLeave(true)}>
+              <div className="flex">
+                <div className="font-bold text-[200px] letter">B</div>
+                <div className="font-bold text-[200px] letter">a</div>
+                <div className="font-bold text-[200px] letter">y</div>
+                <div className="font-bold text-[200px] letter">u</div>
+              </div>
+              <div className="flex">
+                <div className="font-bold text-[200px] letter-2">H</div>
+                <div className="font-bold text-[200px] letter-2">u</div>
+                <div className="font-bold text-[200px] letter-2">s</div>
+                <div className="font-bold text-[200px] letter-2">a</div>
+                <div className="font-bold text-[200px] letter-2">d</div>
+                <div className="font-bold text-[200px] letter-2">a</div>
+              </div>
+            </a>
           </div>
         </div>
+
 
         <div id="web-con" className="z-0">
           <div id="img-holder">
@@ -247,6 +275,7 @@ function App() {
           </div>
 
           <div className="relative h-[100vh] -top-[5px] w-full bg-abubua" id="content-holder">
+
             <h1 className='text-3xl text-oreng flex justify-center items-center align-middle  uppercase pt-10 '>About Me</h1>
             <UnderlineAnimation/>
 
@@ -261,6 +290,10 @@ function App() {
 
           
           <div className='relative -top-[5px] bg-primary h-screen' id='project'>
+          <a href=".me" className='absolute top-0 right-0 m-3 text-3xl'
+            onMouseEnter={() => mouseEnter(true)}
+            onMouseLeave={() => mouseLeave(true)}
+            >HOME</a>
               <h1 className='flex justify-center items-center mx-auto pt-8 text-3xl uppercase text-oreng'>Project</h1>
               <UnderlineAnimation />
               <div className='grid grid-cols-3 p-20 mx-auto gap-4'>
