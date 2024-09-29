@@ -1,5 +1,5 @@
 import './App.css';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import UnderlineAnimation from './components/underline/UnderlineAnimation';
@@ -16,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 
+
 function App() {
   const comp = useRef(null);
   const ballRef = useRef(null);
@@ -27,6 +28,7 @@ function App() {
   const pos = { x: 0, y: 0 };
   const speed = 0.1;
 
+  const [showContent, SetContent] = useState(false);
   const mouseEnter = (siteLink) => {
     if (siteLink) {
       gsap.to(ballRef.current, {
@@ -60,7 +62,9 @@ function App() {
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-      const t1 = gsap.timeline();
+      const t1 = gsap.timeline({
+        onComplete: () => SetContent(true)
+      });
       t1.from('#intro-slider', {
         xPercent: '-100',
         duration: 1.3,
@@ -100,18 +104,31 @@ function App() {
       });
     });
     const handleDOMContentLoaded = () => {
-      const contentHolderHeight = document.querySelector('#content-holder').offsetHeight;
-      const imgHolderHeight = window.innerHeight;
-      const additionalScrollHeight = window.innerHeight;
-      const totalBodyHeight = contentHolderHeight + imgHolderHeight + additionalScrollHeight;
-      document.body.style.height = `${totalBodyHeight}px`;
+      useLayoutEffect(() => {
+        const updateWindowSize = () => {
+          gsap.to('.letter', {
+            x: -window.innerWidth * 3, // memperbarui innerWidth sesuai dengan ukuran jendela
+          });
+          gsap.to('.letter-2', {
+            x: window.innerWidth * 3,
+          });
+        };
+      
+        window.addEventListener('resize', updateWindowSize);
+        updateWindowSize(); // panggil saat inisialisasi
+      
+        return () => {
+          window.removeEventListener('resize', updateWindowSize);
+        };
+      }, []);
+      
     };
 
     document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
 
     ScrollTrigger.create({
       trigger: '#web-con',
-      start: '-0.1% top',
+      start: '-0.1% top 100%',
       end: 'bottom bottom',
       onEnter: () => {
         gsap.set('#web-con', { position: 'absolute', top: '195%' });
@@ -274,18 +291,36 @@ function App() {
             <img src={gg} alt="Main" />
           </div>
 
-          <div className="relative h-[100vh] -top-[5px] w-full bg-abubua" id="content-holder">
+          <div className="relative -top-[5px] w-full bg-abubua   " id="content-holder">
+          <div id="about-me" className=" bg-oreng py-20">
+              <h1 className="text-3xl text-abubua flex justify-center items-center uppercase pb-5">About Me</h1>
+              <UnderlineAnimation />
 
-            <h1 className='text-3xl text-oreng flex justify-center items-center align-middle  uppercase pt-10 '>About Me</h1>
-            <UnderlineAnimation/>
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 px-6">
+                <div>
+                  <h2 className="text-2xl font-semibold text-abubua">Bayu Husada</h2>
+                  <p className="text-lg text-abubua leading-relaxed mt-4">
+                    Hello! I am a passionate front-end developer with a strong focus on creating visually appealing and highly interactive web applications, beautiful interfaces. My goal is to create responsive, user-friendly, and performance-optimized websites.
+                  </p>
+                  <p className="text-lg text-abubua leading-relaxed mt-4">
+                    I have been working on various projects, from simple portfolio websites to more complex applications such as real-time chat apps and web portfolios, always focusing on delivering the best user experience.
+                  </p>
+                </div>
 
-            <div className='grid grid-cols-2 pt-12 px-36'>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dicta velit quaerat repellendus architecto adipisci suscipit laborum laboriosam deserunt consequuntur saepe magnam inventore esse aperiam, consequatur, corrupti nemo qui mollitia?</p>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dicta velit quaerat repellendus architecto adipisci suscipit laborum laboriosam deserunt consequuntur saepe magnam inventore esse aperiam, consequatur, corrupti nemo qui mollitia?</p>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dicta velit quaerat repellendus architecto adipisci suscipit laborum laboriosam deserunt consequuntur saepe magnam inventore esse aperiam, consequatur, corrupti nemo qui mollitia?</p>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dicta velit quaerat repellendus architecto adipisci suscipit laborum laboriosam deserunt consequuntur saepe magnam inventore esse aperiam, consequatur, corrupti nemo qui mollitia?</p>
+                <div>
+                  <h2 className="text-2xl font-semibold text-abubua">Skills</h2>
+                  <ul className="list-disc list-inside text-lg text-abubua mt-4">
+                    <li className='bg-white p-2 rounded-lg m-3'>HTML, CSS, JavaScript</li>
+                    <li className='bg-white p-2 rounded-lg m-3'>ReactJS, Tailwind CSS</li>
+                    <li className='bg-white p-2 rounded-lg m-3'>GSAP (GreenSock Animation Platform)</li>
+                    <li className='bg-white p-2 rounded-lg m-3'>Responsive Design & Web Performance</li>
+                    <li className='bg-white p-2 rounded-lg m-3'>RestAPI Integration</li>
+                    <li className='bg-white p-2 rounded-lg m-3'>Version Control (Git & GitHub)</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-
+            <h1 className=' flex justify-center content-center p-14 text-2xl'>MY LOVELY PROJECT</h1>
           </div>
 
           
@@ -294,8 +329,7 @@ function App() {
             onMouseEnter={() => mouseEnter(true)}
             onMouseLeave={() => mouseLeave(true)}
             >HOME</a>
-              <h1 className='flex justify-center items-center mx-auto pt-8 text-3xl uppercase text-oreng'>Project</h1>
-              <UnderlineAnimation />
+              {/* <h1 className='flex justify-center items-center mx-auto pt-8 text-3xl uppercase text-oreng'>Project</h1> */}
               <div className='grid grid-cols-3 p-20 mx-auto gap-4'>
 
                 <div className='flex flex-col-1 gap-10'>
